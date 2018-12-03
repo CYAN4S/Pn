@@ -26,6 +26,30 @@
             <Label x:Name="label_Copy6" Content="Label" Width="144" Height="37"/>
         </ListBox>
         <Label x:Name="label1" Content="문서" Grid.ColumnSpan="2" Margin="0,0,462,0" Height="40" VerticalAlignment="Top"/>
-        <Label x:Name="label2" Content="새로운그림" Grid.Column="1" Margin="0.4,0,0,0"/>
+        <Label x:Name="label2" Content="새로운그림" Grid.Column="1" HorizontalAlignment="Right" Width="452"/>
+        <Grid Grid.Column="1" HorizontalAlignment="Left" Height="200
+              " Margin="369.4,32,0,0" Grid.Row="1" VerticalAlignment="Top" Width="91">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Button x:Name="button" Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top" Width="48" RenderTransformOrigin="0.368,-0.656" Height="40" Grid.Row="1"/>
+            <Button x:Name="button_Copy" Content="Button" HorizontalAlignment="Right" VerticalAlignment="Top" Width="48" RenderTransformOrigin="0.368,-0.656" Height="40" Margin="0,0,43.2,0" Grid.ColumnSpan="2"/>
+            <Button x:Name="button_Copy1" Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top" Width="48" RenderTransformOrigin="0.368,-0.656" Height="40" Grid.Row="2"/>
+            <Button x:Name="button_Copy2" Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top" Width="48" RenderTransformOrigin="0.368,-0.656" Height="40" Grid.Row="3"/>
+            <Button x:Name="button_Copy3" Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top" Width="48" RenderTransformOrigin="0.368,-0.656" Height="40" Grid.Row="1" Grid.Column="1"/>
+            <Button x:Name="button_Copy4" Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top" Width="48" RenderTransformOrigin="0.368,-0.656" Height="40" Grid.Column="1"/>
+            <Button x:Name="button_Copy5" Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top" Width="48" RenderTransformOrigin="0.368,-0.656" Height="40" Grid.Row="2" Grid.Column="1"/>
+            <Button x:Name="button_Copy6" Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top" Width="48" RenderTransformOrigin="0.368,-0.656" Height="40" Grid.Row="3" Grid.Column="1"/>
+            <Button x:Name="button_Copy7" Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top" Width="48" RenderTransformOrigin="0.368,-0.656" Height="40" Grid.Row="4"/>
+            <Button x:Name="button_Copy8" Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top" Width="48" RenderTransformOrigin="0.368,-0.656" Height="40" Grid.Row="4" Grid.Column="1"/>
+        </Grid>
     </Grid>
 </Window>
