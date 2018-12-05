@@ -20,9 +20,28 @@ namespace Pn
     /// </summary>
     public partial class MainWindow : Window
     {
+        PaintCanvas paintCanvas;
+
         public MainWindow()
         {
             InitializeComponent();
+
+            paintCanvas = new PaintCanvas(CanvasGrid);
+        }
+
+        private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            paintCanvas.PenStart(sender, e);
+        }
+
+        private void Window_MouseMove(object sender, MouseEventArgs e)
+        {
+            paintCanvas.PenUpdate(sender, e);
+        }
+        
+        private void Window_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            paintCanvas.PenEnd(sender, e);
         }
     }
 }
