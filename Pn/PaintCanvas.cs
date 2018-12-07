@@ -18,45 +18,79 @@ namespace Pn
 {
     class PaintCanvas
     {
-        public Grid CanvasGrid { get; set; }
+        public Canvas MainCanvas { get; set; }
 
         bool clicked = false;
         Point _pos;
 
-        public PaintCanvas(Grid canvasGrid)
+        public PaintCanvas(Canvas c)
         {
-            CanvasGrid = canvasGrid;
+            MainCanvas = c;
         }
 
 
-        public void PenStart(object sender, MouseButtonEventArgs e)
+        public void MouseLeftButtonDown(object sender, MouseButtonEventArgs e, ToolController tool)
         {
-            clicked = true;
-            _pos = e.GetPosition(CanvasGrid);
-        }
-
-        public void PenUpdate(object sender, MouseEventArgs e)
-        {
-            var pos = e.GetPosition(CanvasGrid);
-            if (clicked)
+            switch (tool.pick)
             {
-                Line myLine = new Line
-                {
-                    Stroke = System.Windows.Media.Brushes.LightSteelBlue,
-                    X1 = _pos.X,
-                    X2 = pos.X,
-                    Y1 = _pos.Y,
-                    Y2 = pos.Y,
-                    StrokeThickness = 2
-                };
-                CanvasGrid.Children.Add(myLine);
-                _pos = pos;
+                case 1:
+                    clicked = true;
+                    _pos = e.GetPosition(MainCanvas);
+                    break;
+
+                case 2:
+                    break;
+
+                default:
+                    break;
+            }
+
+        }
+
+        public void MouseMove(object sender, MouseEventArgs e, ToolController tool)
+        {
+            switch (tool.pick)
+            {
+                case 1:
+                    var pos = e.GetPosition(MainCanvas);
+                    if (clicked)
+                    {
+                        Line myLine = new Line
+                        {
+                            Stroke = tool.color,
+                            X1 = _pos.X,
+                            X2 = pos.X,
+                            Y1 = _pos.Y,
+                            Y2 = pos.Y,
+                            StrokeThickness = tool.penWidth
+                        };
+                        MainCanvas.Children.Add(myLine);
+                        _pos = pos;
+                    }
+                    break;
+
+                case 2:
+                    break;
+
+                default:
+                    break;
             }
         }
 
-        public void PenEnd(object sender, MouseButtonEventArgs e)
+        public void MouseLeftButtonUp(object sender, MouseButtonEventArgs e, ToolController tool)
         {
-            clicked = false;
+            switch (tool.pick)
+            {
+                case 1:
+                    clicked = false;
+                    break;
+
+                case 2:
+                    break;
+
+                default:
+                    break;
+            }
         }
     }
 }
