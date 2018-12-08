@@ -6,85 +6,108 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Pn"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="622.541" MouseMove="Window_MouseMove" MouseLeftButtonDown="Window_MouseLeftButtonDown" MouseLeftButtonUp="Window_MouseLeftButtonUp">
+        Title="MainWindow" Height="410" Width="739.741" MouseMove="Window_MouseMove" MouseLeftButtonDown="Window_MouseLeftButtonDown" MouseLeftButtonUp="Window_MouseLeftButtonUp" Background="DarkGray">
     <Grid>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="40*"/>
-            <RowDefinition Height="284*"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition/>
         </Grid.RowDefinitions>
-
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <ListBox x:Name="listBox" HorizontalAlignment="Left" Width="154" Grid.Row="1">
-            <Label x:Name="label" Content="Label" Width="144" Height="37"/>
-            <Label x:Name="label_Copy" Content="Label" Width="144" Height="37"/>
-            <Label x:Name="label_Copy1" Content="Label" Width="144" Height="37"/>
-            <Label x:Name="label_Copy2" Content="Label" Width="144" Height="37"/>
-            <Label x:Name="label_Copy3" Content="Label" Width="144" Height="37"/>
-            <Label x:Name="label_Copy4" Content="Label" Width="144" Height="37"/>
-            <Label x:Name="label_Copy5" Content="Label" Width="144" Height="37"/>
-            <Label x:Name="label_Copy6" Content="Label" Width="144" Height="37"/>
-        </ListBox>
-        <Label x:Name="label1" Content="문서" Margin="0,0,85.6,0" Height="40" VerticalAlignment="Top"/>
-        <Label x:Name="label2" Grid.Column="1" HorizontalAlignment="Right" Width="452" RenderTransformOrigin="0.5,0.5">
-        </Label>
-        <Grid Grid.Column="1" HorizontalAlignment="Left" Height="200
-              " Margin="370,50,0,0" Grid.Row="1" VerticalAlignment="Top" Width="81">
-            <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
+
+        <!--TOPMENU-->
+        <Rectangle Fill="White" Grid.ColumnSpan="2"/>
+        <Label x:Name="label1" Content="문서" Height="40" VerticalAlignment="Top"/>
+        <Button x:Name="button3" Content="Button" Margin="146,16,0.2,5" Click="LoadFile"/>
+
+        <Grid Grid.Column="1" HorizontalAlignment="Right" Height="40" VerticalAlignment="Bottom" Width="160">
+            <Button x:Name="button1_Copy2" Content="다시실행" Margin="95,22,0,0"/>
+            <Button x:Name="button1_Copy" Content="실행취소&#xA;" Margin="30,22,65,0" Click="UndoButton"/>
+            <Button x:Name="button1" Content="저장&#xA;" Margin="0,22,130,0" Click="SaveButton"/>
+        </Grid>
+
+        <!--LISTBOX-->
+        <ListBox x:Name="listBox" Grid.Row="1" BorderBrush="#FF111111" Background="#FFE4E4E4" BorderThickness="5"/>
+
+        <!-- PAINT-->
+        <Grid Name="PaintGrid" Grid.Column="1" Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
-                <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Button x:Name="button" Content="Button" RenderTransformOrigin="0.368,-0.656" Grid.Row="1" Click="ColorSelectorButton"/>
-            <Button x:Name="button_Copy" Content="Button" RenderTransformOrigin="0.368,-0.656" Click="PenButtonClick"/>
-            <Button x:Name="button_Copy1" Content="Button" RenderTransformOrigin="0.368,-0.656" Grid.Row="2"/>
-            <Button x:Name="button_Copy2" Content="Button" RenderTransformOrigin="0.368,-0.656" Grid.Row="3"/>
-            <Button x:Name="button_Copy3" Content="Button" RenderTransformOrigin="0.368,-0.656" Grid.Row="1" Grid.Column="1" Margin="0,0,1,0" Click="PenWidthButton"/>
-            <Button x:Name="button_Copy4" Content="Button" RenderTransformOrigin="0.368,-0.656" Grid.Column="1" Margin="0,0,1,0" Click="EraserButtonClick"/>
-            <Button x:Name="button_Copy5" Content="Button" RenderTransformOrigin="0.368,-0.656" Grid.Row="2" Grid.Column="1" Margin="0,0,1,0"/>
-            <Button x:Name="button_Copy6" Content="Button" RenderTransformOrigin="0.368,-0.656" Grid.Row="3" Grid.Column="1" Margin="0,0,1,0"/>
-            <Button x:Name="button_Copy7" Content="Button" RenderTransformOrigin="0.368,-0.656" Grid.Row="4"/>
-            <Button x:Name="button_Copy8" Content="Button" RenderTransformOrigin="0.368,-0.656" Grid.Row="4" Grid.Column="1" Margin="0,0,1,0"/>
-        </Grid>
-        <Button x:Name="button1" Content="저장&#xD;&#xA;" Grid.Column="1" HorizontalAlignment="Left" Margin="302.4,22,0,0" VerticalAlignment="Top" Width="30" Height="18"/>
-        <Button x:Name="button1_Copy" Content="실행취소&#xD;&#xA;" Grid.Column="1" HorizontalAlignment="Left" Margin="332.4,22,0,0" VerticalAlignment="Top" Width="65" Height="18"/>
-        <Button x:Name="button1_Copy2" Content="다시실행" Grid.Column="1" HorizontalAlignment="Left" Margin="397.4,22,0,0" VerticalAlignment="Top" Width="65" Height="18"/>
 
-        <Grid Name="CanvasGrid" Grid.Column="1" Margin="10.4,10,119,59.8" Grid.Row="1">
-            <Border BorderBrush="Black" BorderThickness="1">
-                <Canvas x:Name="MainCanvas"/>
-            </Border>
-        </Grid>
-        
-        <Grid Name="ColorSelectorGrid" Grid.Column="1" HorizontalAlignment="Left" Height="289" Margin="143.4,22,0,0" VerticalAlignment="Top" Width="222" Grid.RowSpan="2" Visibility="Hidden">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="30"/>
+            </Grid.RowDefinitions>
 
-            <xctk:ColorCanvas x:Name="ColorSelector"/>
-            <Button x:Name="button2" Content="Button" HorizontalAlignment="Left" Margin="137,270,0,0" Width="75" Click="ColorSelectOKButton"/>
+            <!-- MAINPART-->
+            <Grid x:Name="CanvasGrid" Margin="10,10,0,0" Height="243" VerticalAlignment="Top" HorizontalAlignment="Left" Width="398">
+                <Canvas x:Name="MainCanvas" Background="White" MouseMove="MainCanvas_MouseMove" MouseLeftButtonDown="MainCanvas_MouseLeftButtonDown" MouseLeftButtonUp="MainCanvas_MouseLeftButtonUp"/>
+            </Grid>
+
+            <Grid Margin="0,68,10.6,0" Height="200" VerticalAlignment="Top" HorizontalAlignment="Right" Width="81">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Button x:Name="button" Content="색상" RenderTransformOrigin="0.368,-0.656" Grid.Row="1" Click="ColorSelectorButton"/>
+                <Button x:Name="button_Copy" Content="펜" RenderTransformOrigin="0.368,-0.656" Click="PenButtonClick"/>
+                <Button x:Name="button_Copy1" Content="배경색" RenderTransformOrigin="0.368,-0.656" Grid.Row="2"/>
+                <Button x:Name="button_Copy2" Content="Button" RenderTransformOrigin="0.368,-0.656" Grid.Row="3"/>
+                <Button x:Name="button_Copy3" Content="펜 굵기" RenderTransformOrigin="0.368,-0.656" Grid.Row="1" Grid.Column="1" Margin="0,0,1,0" Click="PenWidthButton"/>
+                <Button x:Name="button_Copy4" Content="지우개" RenderTransformOrigin="0.368,-0.656" Grid.Column="1" Margin="0,0,1,0" Click="EraserButtonClick"/>
+                <Button x:Name="button_Copy5" Content="Button" RenderTransformOrigin="0.368,-0.656" Grid.Row="2" Grid.Column="1" Margin="0,0,1,0"/>
+                <Button x:Name="button_Copy6" Content="Button" RenderTransformOrigin="0.368,-0.656" Grid.Row="3" Grid.Column="1" Margin="0,0,1,0"/>
+                <Button x:Name="button_Copy7" Content="Button" RenderTransformOrigin="0.368,-0.656" Grid.Row="4"/>
+                <Button x:Name="button_Copy8" Content="Button" RenderTransformOrigin="0.368,-0.656" Grid.Row="4" Grid.Column="1" Margin="0,0,1,0"/>
+            </Grid>
+
+
+
+            <!-- DOWNPART-->
+            <Rectangle Fill="#FFF4F4F5" Stroke="Black" Grid.Row="1" Margin="0,0.4,-0.4,0"/>
+
+            <!-- TOOLS-->
+            <Grid Name="ColorSelectorGrid" Margin="0,10,105.6,0" Visibility="Hidden" HorizontalAlignment="Right" Width="222" Height="290" VerticalAlignment="Top">
+                <xctk:ColorCanvas x:Name="ColorSelector"/>
+                <Button x:Name="button2" Content="Button" HorizontalAlignment="Left" Margin="137,270,0,0" Width="75" Click="ColorSelectOKButton"/>
+            </Grid>
+
+
+            <Grid x:Name="PenWidthGrid" Height="176" Margin="0,77,105.6,0" VerticalAlignment="Top" Background="#FFA3A3A3"  Visibility="Hidden" HorizontalAlignment="Right" Width="46">
+                <Slider x:Name="PenWidth" HorizontalAlignment="Left" Margin="-47,67,-45,0" VerticalAlignment="Top" Width="138" RenderTransformOrigin="0.5,0.5" TickPlacement="BottomRight" TickFrequency="1" IsSnapToTickEnabled="True" ValueChanged="PenWidth_ValueChanged">
+                    <Slider.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform/>
+                            <RotateTransform Angle="-90"/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </Slider.RenderTransform>
+                </Slider>
+                <TextBox x:Name="textBox" HorizontalAlignment="Left" Height="23" Margin="0,153,0,0" TextWrapping="Wrap" Text="{Binding Value, ElementName=PenWidth}" VerticalAlignment="Top" Width="46"/>
+            </Grid>
+
+            <Label x:Name="CursorPosLable" Content="Label" Margin="10,0,0,0" Height="31" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="160" Grid.RowSpan="2"/>
         </Grid>
-        
-        <Button x:Name="button3" Content="Button" Margin="68,10,9.6,11" Click="button3_Click_1"/>
-        <Grid x:Name="PenWidthGrid" Grid.Column="1" HorizontalAlignment="Left" Height="176" Margin="302.4,74,0,0" Grid.Row="1" VerticalAlignment="Top" Width="46" Background="#FFA3A3A3"  Visibility="Hidden">
-            <Slider x:Name="PenWidth" HorizontalAlignment="Left" Margin="-47,67,-45,0" VerticalAlignment="Top" Width="138" RenderTransformOrigin="0.5,0.5" TickPlacement="BottomRight" TickFrequency="1" IsSnapToTickEnabled="True" ValueChanged="PenWidth_ValueChanged">
-                <Slider.RenderTransform>
-                    <TransformGroup>
-                        <ScaleTransform/>
-                        <SkewTransform/>
-                        <RotateTransform Angle="-90"/>
-                        <TranslateTransform/>
-                    </TransformGroup>
-                </Slider.RenderTransform>
-            </Slider>
-            <TextBox x:Name="textBox" HorizontalAlignment="Left" Height="23" Margin="0,153,0,0" TextWrapping="Wrap" Text="{Binding Value, ElementName=PenWidth}" VerticalAlignment="Top" Width="46"/>
-        </Grid>
+        <Button x:Name="button3_Copy" Content="새로만들기" Margin="70,16,42.2,5" Click="NewFile"/>
+
+
+
+
+
+
+
 
 
     </Grid>

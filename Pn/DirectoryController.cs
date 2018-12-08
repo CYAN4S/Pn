@@ -8,5 +8,16 @@ namespace Pn
 {
     class DirectoryController
     {
+        List<string> ListboxList;
+
+        public DirectoryController()
+        {
+            ListboxList = new List<string>();
+        }
+
+        public void AddData(string data)
+        {
+            ListboxList.Add(data);
+        }
     }
 }
