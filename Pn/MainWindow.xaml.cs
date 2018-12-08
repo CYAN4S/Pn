@@ -29,6 +29,7 @@ namespace Pn
         PaintCanvas paintCanvas;
         ToolController toolController;
         DirectoryController directoryController;
+        Stack<List<UIElement>> redos;
         bool isNewFile = true;
 
         public MainWindow()
@@ -38,7 +39,10 @@ namespace Pn
             paintCanvas = new PaintCanvas(MainCanvas);
             toolController = new ToolController();
             directoryController = new DirectoryController();
+            redos = new Stack<List<UIElement>>();
 
+            MainCanvas.Width = CanvasGrid.Width;
+            MainCanvas.Height = CanvasGrid.Height;
         }
 
         private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -48,8 +52,8 @@ namespace Pn
 
         private void Window_MouseMove(object sender, MouseEventArgs e)
         {
-
-
+            CursorPosLable.Content = "(" + (int)e.GetPosition(CanvasGrid).X + ", " + (int)e.GetPosition(CanvasGrid).Y + ")";
+            paintCanvas.MouseMove(sender, e, toolController);
         }
 
         private void Window_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
@@ -59,18 +63,18 @@ namespace Pn
 
         private void MainCanvas_MouseMove(object sender, MouseEventArgs e)
         {
-            CursorPosLable.Content = "(" + (int)e.GetPosition(CanvasGrid).X + ", " + (int)e.GetPosition(CanvasGrid).Y + ")";
-            paintCanvas.MouseMove(sender, e, toolController);
+            
         }
 
         private void MainCanvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            redos.Clear();
             paintCanvas.MouseLeftButtonDown(sender, e, toolController);
         }
 
         private void MainCanvas_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            paintCanvas.MouseLeftButtonUp(sender, e, toolController);
+
         }
 
         private void PenButtonClick(object sender, RoutedEventArgs e)
@@ -87,11 +91,13 @@ namespace Pn
         {
             //toolController.color = ColorSelector
             var cl = ColorSelector.SelectedColor;
-            Color color = new Color();
-            color.R = ColorSelector.R;
-            color.G = ColorSelector.G;
-            color.B = ColorSelector.B;
-            color.A = ColorSelector.A;
+            Color color = new Color
+            {
+                R = ColorSelector.R,
+                G = ColorSelector.G,
+                B = ColorSelector.B,
+                A = ColorSelector.A
+            };
             toolController.color = new SolidColorBrush(color);
             ColorSelectorGrid.Visibility = Visibility.Hidden;
 
@@ -99,10 +105,12 @@ namespace Pn
 
         private void LoadFile(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "Image Files | *.png";
-            openFileDialog.CheckFileExists = true;
-            openFileDialog.CheckPathExists = true;
+            OpenFileDialog openFileDialog = new OpenFileDialog
+            {
+                Filter = "Image Files | *.png",
+                CheckFileExists = true,
+                CheckPathExists = true
+            };
             var result = openFileDialog.ShowDialog();
 
             if (result == true)
@@ -114,21 +122,26 @@ namespace Pn
                     Content = path[path.Length - 1],
                     Height = 37
                 };
-                listBox.Items.Add(item);
+                listBox.Items.Insert(0, item);
 
                 Stream imageStreamSource = new FileStream(openFileDialog.FileName, FileMode.Open, FileAccess.Read, FileShare.Read);
                 PngBitmapDecoder decoder = new PngBitmapDecoder(imageStreamSource, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.Default);
                 BitmapSource bitmapSource = decoder.Frames[0];
 
-                Image myImage = new Image();
-                myImage.Source = bitmapSource;
-                //myImage.Width = 200;
+                Image myImage = new Image
+                {
+                    Source = bitmapSource,
+                    //myImage.Width = 200;
 
-                myImage.Tag = System.IO.Path.GetFullPath(openFileDialog.FileName);
+                    Tag = System.IO.Path.GetFullPath(openFileDialog.FileName)
+                };
 
                 MainCanvas.Children.Clear();
                 CanvasGrid.Width = myImage.Width;
                 CanvasGrid.Height = myImage.Height;
+                
+                //MainCanvas.Width = CanvasGrid.Width;
+                //MainCanvas.Height = CanvasGrid.Height;
                 MainCanvas.Children.Add(myImage);
 
                 isNewFile = false;
@@ -168,10 +181,12 @@ namespace Pn
             if (isNewFile)
             {
                 //Stream myStream;
-                SaveFileDialog saveFileDialog1 = new SaveFileDialog();
+                SaveFileDialog saveFileDialog1 = new SaveFileDialog
+                {
 
-                //saveFileDialog1.Filter = "XAML files|*.xaml|Image files (*.png)|*.png|All files (*.*)|*.*";
-                saveFileDialog1.Filter = "Image files (*.png)|*.png";
+                    //saveFileDialog1.Filter = "XAML files|*.xaml|Image files (*.png)|*.png|All files (*.*)|*.*";
+                    Filter = "Image files (*.png)|*.png"
+                };
                 //saveFileDialog1.FilterIndex = 2;
                 //saveFileDialog1.RestoreDirectory = true;
 
@@ -210,7 +225,7 @@ namespace Pn
             surface.LayoutTransform = null;
 
             // Get the size of canvas
-            Size size = new Size((int)grid.Width, (int)grid.Height);
+            Size size = new Size((int)surface.Width, (int)surface.Height);
             // Measure and arrange the surface
             // VERY IMPORTANT
             surface.Measure(size);
@@ -243,11 +258,34 @@ namespace Pn
 
         private void UndoButton(object sender, RoutedEventArgs e)
         {
-            for (int i = 0; i < paintCanvas.linesCounts[paintCanvas.linesCounts.Count - 1]; i++)
+            if (paintCanvas.LinesCounts.Count != 0)
             {
-                MainCanvas.Children.RemoveAt(MainCanvas.Children.Count - 1);
+                List<UIElement> l = new List<UIElement>();
+                for (int i = 0; i < paintCanvas.LinesCounts[paintCanvas.LinesCounts.Count - 1]; i++)
+                {
+                    if (MainCanvas.Children.Count != 0)
+                    {
+                        l.Add(MainCanvas.Children[MainCanvas.Children.Count - 1]);
+                        MainCanvas.Children.RemoveAt(MainCanvas.Children.Count - 1);
+                    }
+                }
+                redos.Push(l);
+                paintCanvas.LinesCounts.RemoveAt(paintCanvas.LinesCounts.Count - 1);
             }
-            paintCanvas.linesCounts.RemoveAt(paintCanvas.linesCounts.Count - 1);
+            
+        }
+
+        private void RedoButton(object sender, RoutedEventArgs e)
+        {
+            if (redos.Count != 0)
+            {
+                List<UIElement> l = redos.Pop();
+                paintCanvas.LinesCounts.Add(l.Count);
+                foreach (var item in l)
+                {
+                    MainCanvas.Children.Add(item);
+                }
+            }
         }
     }
 }

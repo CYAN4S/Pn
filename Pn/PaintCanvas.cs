@@ -23,11 +23,12 @@ namespace Pn
         bool clicked = false;
         Point _pos;
         int linesCount = 0;
-        public List<int> linesCounts = new List<int>();
+        public List<int> LinesCounts { get; set; }
 
         public PaintCanvas(Canvas c)
         {
             MainCanvas = c;
+            LinesCounts = new List<int>();
         }
 
 
@@ -38,7 +39,26 @@ namespace Pn
                 case 1:
                     clicked = true;
                     _pos = e.GetPosition(MainCanvas);
-                    linesCount = 0;
+                    linesCount = 1;
+
+                    Ellipse myEllipse = new Ellipse
+                    {
+                        Width = tool.penWidth,
+                        Height = tool.penWidth,
+                        Stroke = tool.color,
+                        Fill = tool.color,
+                    };
+                    myEllipse.Margin = new Thickness(_pos.X - tool.penWidth * 0.5, _pos.Y - tool.penWidth * 0.5, 0, 0);
+
+                    MainCanvas.Children.Add(myEllipse);
+                    //polyline = new Polyline
+                    //{
+                    //    Stroke = tool.color,
+                    //    Fill = tool.color,
+                    //    StrokeThickness = tool.penWidth
+                    //};
+                    //polyline.Points.Add(_pos);
+                    //MainCanvas.Children.Add(polyline);
                     break;
 
                 case 2:
@@ -81,11 +101,12 @@ namespace Pn
                             Fill = tool.color,
                         };
                         myEllipse.Margin = new Thickness(_pos.X - tool.penWidth * 0.5, _pos.Y - tool.penWidth * 0.5, 0, 0);
-                        
+
                         MainCanvas.Children.Add(myLine);
                         MainCanvas.Children.Add(myEllipse);
                         _pos = pos;
-                        linesCount++;
+                        linesCount += 2;
+                        //polyline.Points.Add(pos);
                     }
                     break;
 
@@ -103,7 +124,7 @@ namespace Pn
             switch (tool.pick)
             {
                 case 1:
-                    linesCounts.Add(linesCount);
+                    LinesCounts.Add(linesCount);
                     break;
 
                 case 2:

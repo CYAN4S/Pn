@@ -22,9 +22,10 @@
         <Rectangle Fill="White" Grid.ColumnSpan="2"/>
         <Label x:Name="label1" Content="문서" Height="40" VerticalAlignment="Top"/>
         <Button x:Name="button3" Content="Button" Margin="146,16,0.2,5" Click="LoadFile"/>
+        <Button x:Name="button3_Copy" Content="새로만들기" Margin="70,16,42.2,5" Click="NewFile"/>
 
         <Grid Grid.Column="1" HorizontalAlignment="Right" Height="40" VerticalAlignment="Bottom" Width="160">
-            <Button x:Name="button1_Copy2" Content="다시실행" Margin="95,22,0,0"/>
+            <Button x:Name="button1_Copy2" Content="다시실행" Margin="95,22,0,0" Click="RedoButton"/>
             <Button x:Name="button1_Copy" Content="실행취소&#xA;" Margin="30,22,65,0" Click="UndoButton"/>
             <Button x:Name="button1" Content="저장&#xA;" Margin="0,22,130,0" Click="SaveButton"/>
         </Grid>
@@ -45,7 +46,7 @@
 
             <!-- MAINPART-->
             <Grid x:Name="CanvasGrid" Margin="10,10,0,0" Height="243" VerticalAlignment="Top" HorizontalAlignment="Left" Width="398">
-                <Canvas x:Name="MainCanvas" Background="White" MouseMove="MainCanvas_MouseMove" MouseLeftButtonDown="MainCanvas_MouseLeftButtonDown" MouseLeftButtonUp="MainCanvas_MouseLeftButtonUp"/>
+                <Canvas x:Name="MainCanvas" Background="White" MouseMove="MainCanvas_MouseMove" MouseLeftButtonDown="MainCanvas_MouseLeftButtonDown" MouseLeftButtonUp="MainCanvas_MouseLeftButtonUp" ClipToBounds="True"/>
             </Grid>
 
             <Grid Margin="0,68,10.6,0" Height="200" VerticalAlignment="Top" HorizontalAlignment="Right" Width="81">
@@ -100,7 +101,7 @@
 
             <Label x:Name="CursorPosLable" Content="Label" Margin="10,0,0,0" Height="31" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="160" Grid.RowSpan="2"/>
         </Grid>
-        <Button x:Name="button3_Copy" Content="새로만들기" Margin="70,16,42.2,5" Click="NewFile"/>
+
 
 
 
