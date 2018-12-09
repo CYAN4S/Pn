@@ -10,13 +10,15 @@ namespace Pn
     class ToolController
     {
         public int pick;
-        public Brush color;
+        public Brush strokeColor;
+        public Brush fillColor;
         public int penWidth;
         
         public ToolController()
         {
             pick = 1;
-            color = Brushes.Black;
+            strokeColor = Brushes.Black;
+            fillColor = Brushes.Black;
             penWidth = 0;
         }
 

@@ -25,28 +25,30 @@ namespace Pn
         int linesCount = 0;
         public List<int> LinesCounts { get; set; }
 
+        Rectangle tempRectangle = new Rectangle();
+
         public PaintCanvas(Canvas c)
         {
             MainCanvas = c;
             LinesCounts = new List<int>();
+
+            MainCanvas.Children.Add(tempRectangle);
         }
 
 
         public void MouseLeftButtonDown(object sender, MouseButtonEventArgs e, ToolController tool)
         {
+            clicked = true;
+            _pos = e.GetPosition(MainCanvas);
+            linesCount = 1;
             switch (tool.pick)
             {
                 case 1:
-                    clicked = true;
-                    _pos = e.GetPosition(MainCanvas);
-                    linesCount = 1;
-
                     Ellipse myEllipse = new Ellipse
                     {
                         Width = tool.penWidth,
                         Height = tool.penWidth,
-                        Stroke = tool.color,
-                        Fill = tool.color,
+                        Fill = tool.strokeColor,
                     };
                     myEllipse.Margin = new Thickness(_pos.X - tool.penWidth * 0.5, _pos.Y - tool.penWidth * 0.5, 0, 0);
 
@@ -62,8 +64,17 @@ namespace Pn
                     break;
 
                 case 2:
-                    break;
+                    Ellipse myEllipseEra = new Ellipse
+                    {
+                        Width = tool.penWidth,
+                        Height = tool.penWidth,
+                        Fill = Brushes.White
+                    };
+                    myEllipseEra.Margin = new Thickness(_pos.X - tool.penWidth * 0.5, _pos.Y - tool.penWidth * 0.5, 0, 0);
 
+                    MainCanvas.Children.Add(myEllipseEra);
+                    break;
+                    
                 default:
                     break;
             }
@@ -72,45 +83,107 @@ namespace Pn
 
         public void MouseMove(object sender, MouseEventArgs e, ToolController tool)
         {
-             if (!clicked)
+            if (!clicked)
             {
+                tempRectangle = null;
                 return;
             }
+
+            if (e.MouseDevice.LeftButton != MouseButtonState.Pressed)
+            {
+                tempRectangle = null;
+                LinesCounts.Add(1);
+                return;
+            }
+                
+
+            var pos = e.GetPosition(MainCanvas);
             switch (tool.pick)
             {
                 case 1:
-                    var pos = e.GetPosition(MainCanvas);
-                    if (clicked)
+                    Line myLine = new Line
                     {
-                        Line myLine = new Line
-                        {
-                            Stroke = tool.color,
-                            Fill = tool.color,
-                            X1 = _pos.X,
-                            X2 = pos.X,
-                            Y1 = _pos.Y,
-                            Y2 = pos.Y,
-                            StrokeThickness = tool.penWidth,
-                        };
+                        Stroke = tool.strokeColor,
+                        X1 = _pos.X,
+                        X2 = pos.X,
+                        Y1 = _pos.Y,
+                        Y2 = pos.Y,
+                        StrokeThickness = tool.penWidth,
+                    };
 
-                        Ellipse myEllipse = new Ellipse
-                        {
-                            Width = tool.penWidth,
-                            Height = tool.penWidth,
-                            Stroke = tool.color,
-                            Fill = tool.color,
-                        };
-                        myEllipse.Margin = new Thickness(_pos.X - tool.penWidth * 0.5, _pos.Y - tool.penWidth * 0.5, 0, 0);
+                    Ellipse myEllipse = new Ellipse
+                    {
+                        Width = tool.penWidth,
+                        Height = tool.penWidth,
+                        //Stroke = tool.strokeColor,
+                        Fill = tool.strokeColor,
+                    };
+                    myEllipse.Margin = new Thickness(_pos.X - tool.penWidth * 0.5, _pos.Y - tool.penWidth * 0.5, 0, 0);
 
-                        MainCanvas.Children.Add(myLine);
-                        MainCanvas.Children.Add(myEllipse);
-                        _pos = pos;
-                        linesCount += 2;
-                        //polyline.Points.Add(pos);
-                    }
+                    MainCanvas.Children.Add(myLine);
+                    MainCanvas.Children.Add(myEllipse);
+                    _pos = pos;
+                    linesCount += 2;
+                    //polyline.Points.Add(pos);
                     break;
 
                 case 2:
+                    Line _myLine = new Line
+                    {
+                        Stroke = Brushes.White,
+                        X1 = _pos.X,
+                        X2 = pos.X,
+                        Y1 = _pos.Y,
+                        Y2 = pos.Y,
+                        StrokeThickness = tool.penWidth,
+                    };
+
+                    Ellipse _myEllipse = new Ellipse
+                    {
+                        Width = tool.penWidth,
+                        Height = tool.penWidth,
+                        //Stroke = tool.strokeColor,
+                        Fill = Brushes.White
+                    };
+                    _myEllipse.Margin = new Thickness(_pos.X - tool.penWidth * 0.5, _pos.Y - tool.penWidth * 0.5, 0, 0);
+
+                    MainCanvas.Children.Add(_myLine);
+                    MainCanvas.Children.Add(_myEllipse);
+                    _pos = pos;
+                    linesCount += 2;
+                    break;
+
+                case 3:
+                    double left = _pos.X;
+                    double top = _pos.Y;
+
+                    double width = pos.X - _pos.X;
+                    double height = pos.Y - _pos.Y;
+
+                    if (pos.X < _pos.X)
+                    {
+                        left = pos.X;
+                        width *= -1;
+                    }
+                    if (pos.Y < _pos.Y)
+                    {
+                        top = pos.Y;
+                        height *= -1;
+                    }
+
+                    Rectangle myRectangle = new Rectangle
+                    {
+                        Stroke = tool.strokeColor,
+                        Fill = tool.fillColor,
+                        Margin = new Thickness(left, top, 0, 0),
+                        Width = width,
+                        Height = height
+                    };
+
+                    MainCanvas.Children.Remove(tempRectangle);
+                    tempRectangle = myRectangle;
+                    MainCanvas.Children.Add(myRectangle);
+
                     break;
 
                 default:
@@ -128,7 +201,13 @@ namespace Pn
                     break;
 
                 case 2:
+                    LinesCounts.Add(linesCount);
                     break;
+
+                case 3:
+                    LinesCounts.Add(1);
+                    break;
+
 
                 default:
                     break;
