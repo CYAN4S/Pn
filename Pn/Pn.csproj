@@ -126,7 +126,46 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="qqqqqq.png" />
+    <Resource Include="brush.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="erase.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="paint.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="width.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="paint_bucket.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="size.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="rectangle.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="circle.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="stripe.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="minus.png" />
+    <Resource Include="plus.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="save.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="back.png" />
+    <Resource Include="next.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="load.png" />
+    <Resource Include="newfile.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
