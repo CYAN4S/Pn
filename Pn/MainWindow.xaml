@@ -32,7 +32,7 @@
         </Grid>
 
         <!--LISTBOX-->
-        <ListBox x:Name="listBox" Grid.Row="1" BorderBrush="#FF111111" Background="#FFE4E4E4" BorderThickness="5" SelectionChanged="listBox_SelectionChanged">
+        <ListBox x:Name="listBox" Grid.Row="1" BorderBrush="#FF111111" Background="#FFE4E4E4" BorderThickness="5" SelectionChanged="ListBox_SelectionChanged">
         </ListBox>
 
         <!-- PAINT-->

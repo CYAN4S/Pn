@@ -30,8 +30,8 @@ namespace Pn
         ToolController toolController;
         DirectoryController directoryController;
         Stack<List<UIElement>> redos;
-        bool isNewFile = true;
-        string currentFilePath = null;
+        public static bool isNewFile = true;
+        public static string currentFilePath = null;
 
         public MainWindow()
         {
@@ -45,6 +45,8 @@ namespace Pn
             MainCanvas.Width = CanvasGrid.Width;
             MainCanvas.Height = CanvasGrid.Height;
         }
+
+        #region Event
 
         private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
@@ -78,6 +80,10 @@ namespace Pn
 
         }
 
+        #endregion
+
+        #region Drawing Tool Selection
+
         private void PenButtonClick(object sender, RoutedEventArgs e)
         {
             toolController.pick = 1;
@@ -86,6 +92,20 @@ namespace Pn
         private void EraserButtonClick(object sender, RoutedEventArgs e)
         {
             toolController.pick = 2;
+        }
+
+        private void RectButton(object sender, RoutedEventArgs e)
+        {
+            toolController.pick = 3;
+        }
+
+        #endregion
+        
+        #region Color Tool
+
+        private void ColorSelectorButton(object sender, RoutedEventArgs e)
+        {
+            ColorSelectorGrid.Visibility = Visibility.Visible;
         }
 
         private void ColorSelectOKButton(object sender, RoutedEventArgs e)
@@ -101,80 +121,14 @@ namespace Pn
             };
             toolController.strokeColor = new SolidColorBrush(color);
             ColorSelectorGrid.Visibility = Visibility.Hidden;
-
         }
 
-        private void LoadFile(object sender, RoutedEventArgs e)
-        {
-            OpenFileDialog openFileDialog = new OpenFileDialog
-            {
-                Filter = "Image Files | *.png",
-                CheckFileExists = true,
-                CheckPathExists = true
-            };
-            var result = openFileDialog.ShowDialog();
-
-            if (result == true)
-            {
-                var path = openFileDialog.FileName.Split('\\');
-                MessageBox.Show("불러왔습니다.", "알림");
-
-                ListBoxItem remove = null;
-                foreach (ListBoxItem i in listBox.Items)
-                {
-                    if ((string)i.Tag == openFileDialog.FileName)
-                    {
-                        remove = i;
-                    }
-                }
-
-                if (remove != null)
-                {
-                    listBox.Items.Remove(remove);
-                }
-
-                ListBoxItem item = new ListBoxItem
-                {
-                    Content = path[path.Length - 1] + "\n" + openFileDialog.FileName,
-                    Height = 45,
-                    Tag = openFileDialog.FileName
-                };
-                listBox.Items.Insert(0, item);
-
-                Stream imageStreamSource = new FileStream(openFileDialog.FileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-                PngBitmapDecoder decoder = new PngBitmapDecoder(imageStreamSource, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.Default);
-                BitmapSource bitmapSource = decoder.Frames[0];
-
-                Image myImage = new Image
-                {
-                    Source = bitmapSource,
-                    Width = bitmapSource.Width,
-                    Height = bitmapSource.Height,
-
-                    Tag = System.IO.Path.GetFullPath(openFileDialog.FileName)
-                };
-
-                MainCanvas.Children.Clear();
-                CanvasGrid.Width = myImage.Width;
-                CanvasGrid.Height = myImage.Height;
-                
-                MainCanvas.Width = CanvasGrid.Width;
-                MainCanvas.Height = CanvasGrid.Height;
-                MainCanvas.Children.Add(myImage);
-
-                isNewFile = false;
-                currentFilePath = openFileDialog.FileName;
-
-                //imageStreamSource.Close();
-            }
-
-        }
-
-        private void listBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        #endregion
+        
+        private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ListBoxItem lbi = ((sender as ListBox).SelectedItem as ListBoxItem);
-
-
+            
             if (lbi != null)
             {
                 Stream imageStreamSource = new FileStream((string)lbi.Tag, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
@@ -202,6 +156,8 @@ namespace Pn
             }
         }
 
+        #region Pen Width Tool
+
         private void PenWidth_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             toolController.penWidth = (int)PenWidth.Value;
@@ -209,24 +165,21 @@ namespace Pn
 
         private void PenWidthButton(object sender, RoutedEventArgs e)
         {
-            if (PenWidthGrid.Visibility == Visibility.Visible)
-            {
-                PenWidthGrid.Visibility = Visibility.Hidden;
-            }
-            else
-            {
-                PenWidthGrid.Visibility = Visibility.Visible;
-            }
+            PenWidthGrid.Visibility = PenWidthGrid.Visibility == Visibility.Visible ? Visibility.Hidden : Visibility.Visible;
         }
-
-        private void ColorSelectorButton(object sender, RoutedEventArgs e)
-        {
-            ColorSelectorGrid.Visibility = Visibility.Visible;
-        }
-
+        
         private void NewFile(object sender, RoutedEventArgs e)
         {
             MainCanvas.Children.Clear();
+        }
+
+        #endregion
+
+        #region Load & Save
+
+        private void LoadFile(object sender, RoutedEventArgs e)
+        {
+            directoryController.LoadFile(listBox, MainCanvas, CanvasGrid);
         }
 
         private void SaveButton(object sender, RoutedEventArgs e)
@@ -236,7 +189,6 @@ namespace Pn
                 //Stream myStream;
                 SaveFileDialog saveFileDialog1 = new SaveFileDialog
                 {
-
                     //saveFileDialog1.Filter = "XAML files|*.xaml|Image files (*.png)|*.png|All files (*.*)|*.*";
                     Filter = "Image files (*.png)|*.png"
                 };
@@ -258,7 +210,6 @@ namespace Pn
                         myStream.Close();
                     }
                 }*/
-
             }
             else
             {
@@ -266,8 +217,6 @@ namespace Pn
             }
 
             MessageBox.Show("저장되었습니다.", "알림");
-
-
         }
 
         public void ExportToPng(string path, Canvas surface, Grid grid)
@@ -310,7 +259,9 @@ namespace Pn
             // Restore previously saved layout
             surface.LayoutTransform = transform;
         }
+        #endregion
 
+        #region Undo & Redo
         private void UndoButton(object sender, RoutedEventArgs e)
         {
             if (paintCanvas.LinesCounts.Count != 0)
@@ -342,18 +293,12 @@ namespace Pn
                 }
             }
         }
-
-        private void RectButton(object sender, RoutedEventArgs e)
-        {
-            toolController.pick = 3;
-        }
-
+        #endregion
+        
+        #region Resize Window
         ResizeWindow resizeWindow = null;
         private void ResizeButton(object sender, RoutedEventArgs e)
         {
-            //Application.Current.Properties["Width"] = ;
-            //Application.Current.Properties["Height"] = ;
-
             if (resizeWindow == null)
             {
                 resizeWindow = new ResizeWindow(CanvasGrid.Width, CanvasGrid.Height);
@@ -361,6 +306,7 @@ namespace Pn
                 resizeWindow.Show();
             }
         }
+
         void OKEvent(string a, string b)
         {
             if (a != null && b != null)
@@ -378,5 +324,6 @@ namespace Pn
                 resizeWindow = null;
             }
         }
+        #endregion
     }
 }
