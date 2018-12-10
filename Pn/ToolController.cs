@@ -19,7 +19,7 @@ namespace Pn
             pick = 1;
             strokeColor = Brushes.Black;
             fillColor = Brushes.Black;
-            penWidth = 0;
+            penWidth = 1;
         }
 
     }

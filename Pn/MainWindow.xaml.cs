@@ -32,6 +32,8 @@ namespace Pn
         Stack<List<UIElement>> redos;
         public static bool isNewFile = true;
         public static string currentFilePath = null;
+        ScaleTransform st = new ScaleTransform();
+        
 
         public MainWindow()
         {
@@ -44,18 +46,20 @@ namespace Pn
 
             MainCanvas.Width = CanvasGrid.Width;
             MainCanvas.Height = CanvasGrid.Height;
+
+            MainCanvas.RenderTransform = st;
         }
 
         #region Event
 
         private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-
+            PenWidthGrid.Visibility = Visibility.Hidden;
         }
 
         private void Window_MouseMove(object sender, MouseEventArgs e)
         {
-            CursorPosLable.Content = "(" + (int)e.GetPosition(CanvasGrid).X + ", " + (int)e.GetPosition(CanvasGrid).Y + ")";
+            
             paintCanvas.MouseMove(sender, e, toolController);
         }
 
@@ -66,11 +70,12 @@ namespace Pn
 
         private void MainCanvas_MouseMove(object sender, MouseEventArgs e)
         {
-            
+            CursorPosLable.Content = "(" + (int)e.GetPosition(CanvasGrid).X + ", " + (int)e.GetPosition(CanvasGrid).Y + ")";
         }
 
         private void MainCanvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            PenWidthGrid.Visibility = Visibility.Hidden;
             redos.Clear();
             paintCanvas.MouseLeftButtonDown(sender, e, toolController);
         }
@@ -99,8 +104,18 @@ namespace Pn
             toolController.pick = 3;
         }
 
+        private void LineButton(object sender, RoutedEventArgs e)
+        {
+            toolController.pick = 4;
+        }
+
+        private void button_Copy6_Click(object sender, RoutedEventArgs e)
+        {
+            toolController.pick = 5;
+        }
+
         #endregion
-        
+
         #region Color Tool
 
         private void ColorSelectorButton(object sender, RoutedEventArgs e)
@@ -123,8 +138,28 @@ namespace Pn
             ColorSelectorGrid.Visibility = Visibility.Hidden;
         }
 
+
+        private void button_Copy1_Click(object sender, RoutedEventArgs e)
+        {
+            ColorSelectorGrid_.Visibility = Visibility.Visible;
+        }
+
+        private void button2__Click(object sender, RoutedEventArgs e)
+        {
+            var cl = ColorSelector_.SelectedColor;
+            Color color = new Color
+            {
+                R = ColorSelector_.R,
+                G = ColorSelector_.G,
+                B = ColorSelector_.B,
+                A = ColorSelector_.A
+            };
+            toolController.fillColor = new SolidColorBrush(color);
+            ColorSelectorGrid_.Visibility = Visibility.Hidden;
+        }
+
         #endregion
-        
+
         private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ListBoxItem lbi = ((sender as ListBox).SelectedItem as ListBoxItem);
@@ -153,6 +188,7 @@ namespace Pn
                 MainCanvas.Children.Add(myImage);
 
                 isNewFile = false;
+                currentFilePath = (string)(lbi.Tag);
             }
         }
 
@@ -160,7 +196,11 @@ namespace Pn
 
         private void PenWidth_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            toolController.penWidth = (int)PenWidth.Value;
+            if (toolController != null)
+            {
+
+                toolController.penWidth = (int)PenWidth.Value;
+            }
         }
 
         private void PenWidthButton(object sender, RoutedEventArgs e)
@@ -168,12 +208,19 @@ namespace Pn
             PenWidthGrid.Visibility = PenWidthGrid.Visibility == Visibility.Visible ? Visibility.Hidden : Visibility.Visible;
         }
         
+        #endregion
+
         private void NewFile(object sender, RoutedEventArgs e)
         {
-            MainCanvas.Children.Clear();
-        }
+            if (MainCanvas.Children.Count > 1)
+            {
 
-        #endregion
+            }
+
+            MainCanvas.Children.Clear();
+            currentFilePath = null;
+            isNewFile = true;
+        }
 
         #region Load & Save
 
@@ -210,6 +257,15 @@ namespace Pn
                         myStream.Close();
                     }
                 }*/
+
+                var path = saveFileDialog1.FileName.Split('\\');
+                ListBoxItem item = new ListBoxItem
+                {
+                    Content = path[path.Length - 1] + "\n" + saveFileDialog1.FileName,
+                    Height = 45,
+                    Tag = saveFileDialog1.FileName
+                };
+                listBox.Items.Insert(0, item);
             }
             else
             {
@@ -325,5 +381,60 @@ namespace Pn
             }
         }
         #endregion
+
+        private void button4_Click(object sender, RoutedEventArgs e)
+        {
+            CanvasGrid.Width *= 2;
+            CanvasGrid.Height *= 2;
+
+            st.ScaleX *= 2;
+            st.ScaleY *= 2;
+
+            RangeSlider.Value = Math.Log(st.ScaleX, 2);
+        }
+
+        private void button5_Click(object sender, RoutedEventArgs e)
+        {
+            CanvasGrid.Width /= 2;
+            CanvasGrid.Height /= 2;
+
+            st.ScaleX /= 2;
+            st.ScaleY /= 2;
+
+            RangeSlider.Value = Math.Log(st.ScaleX, 2);
+        }
+
+        private void RangeSliderValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            CanvasGrid.Width = MainCanvas.ActualWidth * Math.Pow(2, RangeSlider.Value);
+            CanvasGrid.Height = MainCanvas.ActualHeight * Math.Pow(2, RangeSlider.Value);
+
+            st.ScaleX = Math.Pow(2, RangeSlider.Value);
+            st.ScaleY = Math.Pow(2, RangeSlider.Value);
+
+            RangeTextBox.Text = ((int)(100 * Math.Pow(2, RangeSlider.Value))).ToString() + "%";
+        }
+
+        private void RangeTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            //string inputText = RangeTextBox.Text;
+            //char[] percent = { '%' };
+            //inputText = inputText.TrimEnd(percent);
+            //int percentage =
+
+
+        }
+
+        private void ScrollViewer_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            PenWidthGrid.Visibility = Visibility.Hidden;
+        }
+
+        private void Grid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            PenWidthGrid.Visibility = Visibility.Hidden;
+        }
+
+        
     }
 }
