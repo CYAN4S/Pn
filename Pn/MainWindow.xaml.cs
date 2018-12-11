@@ -53,22 +53,26 @@ namespace Pn
 
         #region Event
 
+        // WINDOW
         private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             PenWidthGrid.Visibility = Visibility.Hidden;
+            HelpLabel.Content = "Window";
         }
 
         private void Window_MouseMove(object sender, MouseEventArgs e)
         {
-            
+            //CursorPosLable.Content = "(" + (int)e.GetPosition(CanvasGrid).X + ", " + (int)e.GetPosition(CanvasGrid).Y + ")";
             paintCanvas.MouseMove(sender, e, toolController);
         }
 
         private void Window_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             paintCanvas.MouseLeftButtonUp(sender, e, toolController);
+            //HelpLabel.Content = "LAB_";
         }
 
+        //MAINCANVAS
         private void MainCanvas_MouseMove(object sender, MouseEventArgs e)
         {
             CursorPosLable.Content = "(" + (int)e.GetPosition(CanvasGrid).X + ", " + (int)e.GetPosition(CanvasGrid).Y + ")";
@@ -76,6 +80,7 @@ namespace Pn
 
         private void MainCanvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            HelpLabel.Content = "MainCanvas";
             PenWidthGrid.Visibility = Visibility.Hidden;
             redos.Clear();
             paintCanvas.MouseLeftButtonDown(sender, e, toolController);
@@ -84,6 +89,11 @@ namespace Pn
         private void MainCanvas_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
 
+        }
+
+        private void PaintGrid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            HelpLabel.Content = "PaintGrid";
         }
 
         #endregion
@@ -199,7 +209,6 @@ namespace Pn
         {
             if (toolController != null)
             {
-
                 toolController.penWidth = (int)PenWidth.Value;
             }
         }
@@ -213,21 +222,21 @@ namespace Pn
 
         private void NewFile(object sender, RoutedEventArgs e)
         {
-            if (MainCanvas.Children.Count > 1)
+            if (MainCanvas.Children.Count > 0)
             {
                 MessageBoxResult result = MessageBox.Show("내용", "타이틀", MessageBoxButton.YesNoCancel);
 
                 if (result == MessageBoxResult.Yes)
                 {
-                    MessageBox.Show("Yes 누름");
+                    directoryController.SaveFile(listBox, MainCanvas, CanvasGrid);
                 }
                 else if (result == MessageBoxResult.No)
                 {
-                    MessageBox.Show("No 누름");
+                    // skip.
                 }
                 else if (result == MessageBoxResult.Cancel)
                 {
-                    MessageBox.Show("Cancel 누름");
+                    return;
                 }
             }
 
@@ -245,89 +254,46 @@ namespace Pn
 
         private void SaveButton(object sender, RoutedEventArgs e)
         {
-            if (isNewFile)
-            {
-                //Stream myStream;
-                SaveFileDialog saveFileDialog1 = new SaveFileDialog
-                {
-                    //saveFileDialog1.Filter = "XAML files|*.xaml|Image files (*.png)|*.png|All files (*.*)|*.*";
-                    Filter = "Image files (*.png)|*.png"
-                };
-                //saveFileDialog1.FilterIndex = 2;
-                //saveFileDialog1.RestoreDirectory = true;
-
-                var result = saveFileDialog1.ShowDialog();
-                if (result == true)
-                {
-                    // File.WriteAllText(saveFileDialog1.FileName, XamlWriter.Save(MainCanvas.Children));
-                    ExportToPng(saveFileDialog1.FileName, MainCanvas, CanvasGrid);
-                }
-                /*
-                if (saveFileDialog1.ShowDialog() == DialogResult.OK)
-                {
-                    if ((myStream = saveFileDialog1.OpenFile()) != null)
-                    {
-                        // Code to write the stream goes here.
-                        myStream.Close();
-                    }
-                }*/
-
-                var path = saveFileDialog1.FileName.Split('\\');
-                ListBoxItem item = new ListBoxItem
-                {
-                    Content = path[path.Length - 1] + "\n" + saveFileDialog1.FileName,
-                    Height = 45,
-                    Tag = saveFileDialog1.FileName
-                };
-                listBox.Items.Insert(0, item);
-            }
-            else
-            {
-                ExportToPng(currentFilePath, MainCanvas, CanvasGrid);
-            }
-
-            MessageBox.Show("저장되었습니다.", "알림");
-        }
-
-        public void ExportToPng(string path, Canvas surface, Grid grid)
-        {
-            if (path == null) return;
-
-            // Save current canvas transform
-            Transform transform = surface.LayoutTransform;
-            // reset current transform (in case it is scaled or rotated)
-            surface.LayoutTransform = null;
-
-            // Get the size of canvas
-            Size size = new Size((int)surface.Width, (int)surface.Height);
-            // Measure and arrange the surface
-            // VERY IMPORTANT
-            surface.Measure(size);
-            surface.Arrange(new Rect(size));
-
-            // Create a render bitmap and push the surface to it
-            RenderTargetBitmap renderBitmap =
-              new RenderTargetBitmap(
-                (int)size.Width,
-                (int)size.Height,
-                96d,
-                96d,
-                PixelFormats.Pbgra32);
-            renderBitmap.Render(surface);
-
-            // Create a file stream for saving image
-            using (FileStream outStream = new FileStream(path, FileMode.Create))
-            {
-                // Use png encoder for our data
-                PngBitmapEncoder encoder = new PngBitmapEncoder();
-                // push the rendered bitmap to it
-                encoder.Frames.Add(BitmapFrame.Create(renderBitmap));
-                // save the data to the stream
-                encoder.Save(outStream);
-            }
-
-            // Restore previously saved layout
-            surface.LayoutTransform = transform;
+            directoryController.SaveFile(listBox, MainCanvas, CanvasGrid);
+            //if (isNewFile)
+            //{
+            //    //Stream myStream;
+            //    SaveFileDialog saveFileDialog1 = new SaveFileDialog
+            //    {
+            //        //saveFileDialog1.Filter = "XAML files|*.xaml|Image files (*.png)|*.png|All files (*.*)|*.*";
+            //        Filter = "Image files (*.png)|*.png"
+            //    };
+            //    //saveFileDialog1.FilterIndex = 2;
+            //    //saveFileDialog1.RestoreDirectory = true;
+            //    var result = saveFileDialog1.ShowDialog();
+            //    if (result == true)
+            //    {
+            //        // File.WriteAllText(saveFileDialog1.FileName, XamlWriter.Save(MainCanvas.Children));
+            //        ExportToPng(saveFileDialog1.FileName, MainCanvas, CanvasGrid);
+            //    }
+            //    /*
+            //    if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+            //    {
+            //        if ((myStream = saveFileDialog1.OpenFile()) != null)
+            //        {
+            //            // Code to write the stream goes here.
+            //            myStream.Close();
+            //        }
+            //    }*/
+            //    var path = saveFileDialog1.FileName.Split('\\');
+            //    ListBoxItem item = new ListBoxItem
+            //    {
+            //        Content = path[path.Length - 1] + "\n" + saveFileDialog1.FileName,
+            //        Height = 45,
+            //        Tag = saveFileDialog1.FileName
+            //    };
+            //    listBox.Items.Insert(0, item);
+            //}
+            //else
+            //{
+            //    ExportToPng(currentFilePath, MainCanvas, CanvasGrid);
+            //}
+            //MessageBox.Show("저장되었습니다.", "알림");
         }
         #endregion
 
@@ -437,16 +403,6 @@ namespace Pn
             //int percentage =
 
 
-        }
-
-        private void ScrollViewer_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            PenWidthGrid.Visibility = Visibility.Hidden;
-        }
-
-        private void Grid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            PenWidthGrid.Visibility = Visibility.Hidden;
         }
 
         

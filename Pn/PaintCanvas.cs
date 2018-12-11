@@ -33,10 +33,7 @@ namespace Pn
         {
             MainCanvas = c;
             LinesCounts = new List<int>();
-
-            MainCanvas.Children.Add(tempRectangle);
         }
-
 
         public void MouseLeftButtonDown(object sender, MouseButtonEventArgs e, ToolController tool)
         {
