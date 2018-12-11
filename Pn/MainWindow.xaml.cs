@@ -189,6 +189,8 @@ namespace Pn
 
                 isNewFile = false;
                 currentFilePath = (string)(lbi.Tag);
+
+                Text_Show.Text = System.IO.Path.GetFileName(currentFilePath);
             }
         }
 
@@ -435,6 +437,6 @@ namespace Pn
             PenWidthGrid.Visibility = Visibility.Hidden;
         }
 
-        
+       
     }
 }
