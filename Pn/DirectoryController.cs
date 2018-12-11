@@ -173,12 +173,16 @@ namespace Pn
                     Tag = saveFileDialog1.FileName,
                 };
                 listBox.Items.Insert(0, item);
+                MainWindow.currentFilePath = saveFileDialog1.FileName;
             }
             else
             {
                 ExportToPng(MainWindow.currentFilePath, MainCanvas, CanvasGrid);
             }
             MessageBox.Show("저장되었습니다.", "알림");
+
+            MainWindow.isNewFile = false;
+            
         }
 
         public void ExportToPng(string path, Canvas surface, Grid grid)

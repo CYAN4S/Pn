@@ -55,6 +55,9 @@
             </Button.Background>
         </Button>
 
+        <Label x:Name="FileNameLabel" Content="새 문서" Height="40" VerticalAlignment="Top" Foreground="White" BorderBrush="#FFEDF360" FontSize="20" FontWeight="Bold" Margin="10,0,0,0" Grid.Column="1"/>
+        <!--<TextBox x:Name="Text_Show" Grid.Column="1" HorizontalAlignment="Left" Height="30" Margin="0,10,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="269" FontSize="18" BorderBrush="{x:Null}"/>-->
+
         <Grid Grid.Column="1" HorizontalAlignment="Right" Height="35" VerticalAlignment="Bottom" Width="160" Margin="0,0,-0.4,5">
             <Button x:Name="button1_Copy2" Content="다시실행" Click="RedoButton" BorderBrush="{x:Null}" Foreground="{x:Null}" Style="{StaticResource MyButton}" Height="18" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="25">
                 <Button.Background>
@@ -159,7 +162,7 @@
             </Button>
             <Slider x:Name="RangeSlider" Margin="0,0,25,0" Background="{x:Null}" LargeChange="0" Maximum="5" Minimum="-5" ValueChanged="RangeSliderValueChanged" Grid.Row="1" HorizontalAlignment="Right" Width="90"/>
             <TextBox x:Name="RangeTextBox" Margin="0,0,145,0" TextWrapping="Wrap" Text="100%" HorizontalAlignment="Right" Width="60" TextAlignment="Center" Background="{x:Null}" BorderBrush="{x:Null}" TextChanged="RangeTextBox_TextChanged" Grid.ColumnSpan="2" Grid.Column="1" Grid.Row="1"/>
-            <Label x:Name="HelpLabel" Content="설명" Grid.Row="1" Background="{x:Null}" Padding="5,0,0,0" Margin="10,2" HorizontalContentAlignment="Center"/>
+            <Label x:Name="HelpLabel" Content="설명" Grid.Row="1" Background="{x:Null}" Padding="5,0,0,0" Margin="10,2" HorizontalContentAlignment="Center" Foreground="{x:Null}"/>
 
             <!-- TOOLS-->
             <Grid Name="ColorSelectorGrid" Margin="0,10,106,0" Visibility="Hidden" HorizontalAlignment="Right" Width="222" Height="290" VerticalAlignment="Top" Grid.ColumnSpan="3">
@@ -179,6 +182,7 @@
             </Grid>
 
         </Grid>
-        <TextBox x:Name="Text_Show" Grid.Column="1" HorizontalAlignment="Left" Height="30" Margin="0,10,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="269" FontSize="18" BorderBrush="{x:Null}"/>
+
+
     </Grid>
 </Window>

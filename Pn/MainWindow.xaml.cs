@@ -202,7 +202,7 @@ namespace Pn
                 isNewFile = false;
                 currentFilePath = (string)(lbi.Tag);
 
-                Text_Show.Text = System.IO.Path.GetFileName(currentFilePath);
+                FileNameLabel.Content = System.IO.Path.GetFileName(currentFilePath);
             }
         }
 
@@ -246,6 +246,8 @@ namespace Pn
             MainCanvas.Children.Clear();
             currentFilePath = null;
             isNewFile = true;
+
+            FileNameLabel.Content = "새 문서";
         }
 
         #region Load & Save
@@ -271,11 +273,13 @@ namespace Pn
             }
 
             directoryController.LoadFile(listBox, MainCanvas, CanvasGrid);
+            FileNameLabel.Content = System.IO.Path.GetFileName(currentFilePath);
         }
 
         private void SaveButton(object sender, RoutedEventArgs e)
         {
             directoryController.SaveFile(listBox, MainCanvas, CanvasGrid);
+            FileNameLabel.Content = System.IO.Path.GetFileName(currentFilePath);
             //if (isNewFile)
             //{
             //    //Stream myStream;
