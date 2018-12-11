@@ -91,9 +91,10 @@ namespace Pn
 
         }
 
-        private void PaintGrid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void Rectangle_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            HelpLabel.Content = "PaintGrid";
+            HelpLabel.Content = "Rect";
+            PenWidthGrid.Visibility = Visibility.Hidden;
         }
 
         #endregion

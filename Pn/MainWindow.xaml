@@ -55,7 +55,7 @@
         <ListBox x:Name="listBox" Grid.Row="1" Background="#FFDEDFD3" BorderThickness="3.5" SelectionChanged="ListBox_SelectionChanged" Foreground="Black" BorderBrush="Black"/>
 
         <!-- PAINT-->
-        <Grid Name="PaintGrid" Grid.Column="1" Grid.Row="1" MouseLeftButtonDown="PaintGrid_MouseLeftButtonDown">
+        <Grid Name="PaintGrid" Grid.Column="1" Grid.Row="1">
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*"/>
@@ -64,8 +64,11 @@
 
             <!-- MAINPART-->
             <ScrollViewer HorizontalScrollBarVisibility="Visible">
-                <Grid x:Name="CanvasGrid" Height="243" VerticalAlignment="Top" HorizontalAlignment="Left" Width="398" Background="#FF6B6B6B" Margin="10,10,10,10">
-                    <Canvas x:Name="MainCanvas" Background="White" MouseMove="MainCanvas_MouseMove" MouseLeftButtonDown="MainCanvas_MouseLeftButtonDown" MouseLeftButtonUp="MainCanvas_MouseLeftButtonUp" ClipToBounds="True" Height="243" VerticalAlignment="Top" HorizontalAlignment="Left" Width="398"/>
+                <Grid>
+                    <Rectangle Fill="#FF78E4D5" MouseLeftButtonDown="Rectangle_MouseLeftButtonDown"></Rectangle>
+                    <Grid x:Name="CanvasGrid" Height="243" VerticalAlignment="Top" HorizontalAlignment="Left" Width="398" Background="#FF6B6B6B" Margin="10,10,10,10">
+                        <Canvas x:Name="MainCanvas" Background="White" MouseMove="MainCanvas_MouseMove" MouseLeftButtonDown="MainCanvas_MouseLeftButtonDown" MouseLeftButtonUp="MainCanvas_MouseLeftButtonUp" ClipToBounds="True" Height="243" VerticalAlignment="Top" HorizontalAlignment="Left" Width="398"/>
+                    </Grid>
                 </Grid>
             </ScrollViewer>
 
