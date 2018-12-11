@@ -225,7 +225,7 @@ namespace Pn
         {
             if (MainCanvas.Children.Count > 0)
             {
-                MessageBoxResult result = MessageBox.Show("내용", "타이틀", MessageBoxButton.YesNoCancel);
+                MessageBoxResult result = MessageBox.Show("변경 내용을 저장하시겠습니까?", "저장", MessageBoxButton.YesNoCancel);
 
                 if (result == MessageBoxResult.Yes)
                 {
@@ -250,6 +250,24 @@ namespace Pn
 
         private void LoadFile(object sender, RoutedEventArgs e)
         {
+            if (MainCanvas.Children.Count > 0)
+            {
+                MessageBoxResult result = MessageBox.Show("변경 내용을 저장하시겠습니까?", "저장", MessageBoxButton.YesNoCancel);
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    directoryController.SaveFile(listBox, MainCanvas, CanvasGrid);
+                }
+                else if (result == MessageBoxResult.No)
+                {
+                    // skip.
+                }
+                else if (result == MessageBoxResult.Cancel)
+                {
+                    return;
+                }
+            }
+
             directoryController.LoadFile(listBox, MainCanvas, CanvasGrid);
         }
 

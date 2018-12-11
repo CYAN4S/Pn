@@ -6,8 +6,29 @@
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		xmlns:local="clr-namespace:Pn"
 		mc:Ignorable="d"
-		Title="MainWindow" Height="500
-		" Width="800" MouseMove="Window_MouseMove" MouseLeftButtonDown="Window_MouseLeftButtonDown" MouseLeftButtonUp="Window_MouseLeftButtonUp" Background="#FFD0ABF1">
+		Title="PaintDoc" Height="600" Width="800" MouseMove="Window_MouseMove" MouseLeftButtonDown="Window_MouseLeftButtonDown" MouseLeftButtonUp="Window_MouseLeftButtonUp" Background="#FFD0ABF1">
+    <Window.Resources>
+        <Style x:Key="MyButton" TargetType="Button">
+            <Setter Property="OverridesDefaultStyle" Value="True" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Name="border" BorderThickness="0" BorderBrush="Black" Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Opacity" Value="0.8" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+    </Window.Resources>
+
     <Grid>
 
         <Grid.RowDefinitions>
@@ -20,31 +41,32 @@
         </Grid.ColumnDefinitions>
 
         <!--TOPMENU-->
-        <Rectangle Fill="White" Grid.ColumnSpan="2"/>
-        <Label x:Name="label1" Content="문서" Height="40" VerticalAlignment="Top"/>
-        <Button x:Name="button3" Content="Button" Margin="175,16,0,5" Click="LoadFile" BorderBrush="{x:Null}" Foreground="{x:Null}">
+        <Rectangle Height="40" VerticalAlignment="Top" StrokeThickness="3" Grid.ColumnSpan="2" Margin="0,0,-0.4,0" Fill="#FF58C9B9"/>
+
+        <Label x:Name="label1" Content="문서" Height="40" VerticalAlignment="Top" Foreground="White" BorderBrush="#FFEDF360" FontSize="20" FontWeight="Bold" Margin="10,0,0,0"/>
+        <Button x:Name="button3" Content="Button" Margin="175,16,0,5" Click="LoadFile" BorderBrush="{x:Null}" Foreground="{x:Null}" Style="{StaticResource MyButton}">
             <Button.Background>
                 <ImageBrush ImageSource="load.png" Stretch="Uniform"/>
             </Button.Background>
         </Button>
-        <Button x:Name="button3_Copy" Content="새로만들기" Margin="145,16,30,5" Click="NewFile" BorderBrush="{x:Null}" Foreground="{x:Null}">
+        <Button x:Name="button3_Copy" Content="새로만들기" Margin="145,16,30,5" Click="NewFile" BorderBrush="{x:Null}" Foreground="{x:Null}" Style="{StaticResource MyButton}">
             <Button.Background>
                 <ImageBrush ImageSource="newfile.png" Stretch="Uniform"/>
             </Button.Background>
         </Button>
 
-        <Grid Grid.Column="1" HorizontalAlignment="Right" Height="40" VerticalAlignment="Bottom" Width="160">
-            <Button x:Name="button1_Copy2" Content="다시실행" Margin="135,22,0,0" Click="RedoButton" BorderBrush="{x:Null}" Foreground="{x:Null}" RenderTransformOrigin="-0.301,0.526">
+        <Grid Grid.Column="1" HorizontalAlignment="Right" Height="35" VerticalAlignment="Bottom" Width="160" Margin="0,0,-0.4,5">
+            <Button x:Name="button1_Copy2" Content="다시실행" Click="RedoButton" BorderBrush="{x:Null}" Foreground="{x:Null}" Style="{StaticResource MyButton}" Height="18" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="25">
                 <Button.Background>
                     <ImageBrush Stretch="Uniform" ImageSource="next.png"/>
                 </Button.Background>
             </Button>
-            <Button x:Name="button1_Copy" Content="실행취소&#xA;" Margin="105,22,30,0" Click="UndoButton" BorderBrush="{x:Null}" Foreground="{x:Null}">
+            <Button x:Name="button1_Copy" Content="실행취소&#xA;" Margin="0,0,30,0" Click="UndoButton" BorderBrush="{x:Null}" Foreground="{x:Null}" Style="{StaticResource MyButton}" Height="18" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="25">
                 <Button.Background>
                     <ImageBrush ImageSource="back.png" Stretch="Uniform"/>
                 </Button.Background>
             </Button>
-            <Button x:Name="button1" Content="저장&#xA;" Margin="80,22,55,0" Click="SaveButton" BorderBrush="{x:Null}" Foreground="{x:Null}">
+            <Button x:Name="button1" Content="저장&#xA;" Margin="0,0,55,0" Click="SaveButton" BorderBrush="{x:Null}" Foreground="{x:Null}" Style="{StaticResource MyButton}" Height="18" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="25">
                 <Button.Background>
                     <ImageBrush ImageSource="save.png" Stretch="Uniform"/>
                 </Button.Background>
@@ -52,7 +74,9 @@
         </Grid>
 
         <!--LISTBOX-->
-        <ListBox x:Name="listBox" Grid.Row="1" Background="#FFDEDFD3" BorderThickness="3.5" SelectionChanged="ListBox_SelectionChanged" Foreground="Black" BorderBrush="Black"/>
+        <ListBox x:Name="listBox" Grid.Row="1" Background="#FF519D9E" BorderThickness="3" SelectionChanged="ListBox_SelectionChanged" Foreground="Black" BorderBrush="#FF519D9E">
+
+        </ListBox>
 
         <!-- PAINT-->
         <Grid Name="PaintGrid" Grid.Column="1" Grid.Row="1">
@@ -65,84 +89,70 @@
             <!-- MAINPART-->
             <ScrollViewer HorizontalScrollBarVisibility="Visible">
                 <Grid>
-                    <Rectangle Fill="#FF78E4D5" MouseLeftButtonDown="Rectangle_MouseLeftButtonDown"></Rectangle>
+                    <Rectangle Fill="#FFD1B6E1" MouseLeftButtonDown="Rectangle_MouseLeftButtonDown"></Rectangle>
                     <Grid x:Name="CanvasGrid" Height="243" VerticalAlignment="Top" HorizontalAlignment="Left" Width="398" Background="#FF6B6B6B" Margin="10,10,10,10">
                         <Canvas x:Name="MainCanvas" Background="White" MouseMove="MainCanvas_MouseMove" MouseLeftButtonDown="MainCanvas_MouseLeftButtonDown" MouseLeftButtonUp="MainCanvas_MouseLeftButtonUp" ClipToBounds="True" Height="243" VerticalAlignment="Top" HorizontalAlignment="Left" Width="398"/>
                     </Grid>
                 </Grid>
             </ScrollViewer>
 
-            <Grid Margin="0,105,25,0" Height="195" VerticalAlignment="Top" HorizontalAlignment="Right" Width="76" OpacityMask="White" Grid.Column="2">
-                <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-                <Button x:Name="button" Content="색상" RenderTransformOrigin="0.368,-0.656" Grid.Row="1" Click="ColorSelectorButton" BorderBrush="{x:Null}" Foreground="{x:Null}">
-                    <Button.Background>
-                        <ImageBrush ImageSource="paint.png"/>
-                    </Button.Background>
-                </Button>
-                <Button Content="브러쉬" RenderTransformOrigin="0.368,-0.656" Click="PenButtonClick" Foreground="{x:Null}" BorderBrush="{x:Null}">
+            <StackPanel Margin="0,10,24.6,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="39">
+                <Button Click="PenButtonClick" Foreground="{x:Null}" BorderBrush="{x:Null}" Style="{StaticResource MyButton}" Height="39" Margin="0, 0, 0, 5">
                     <Button.Background>
                         <ImageBrush ImageSource="brush.png"/>
                     </Button.Background>
                 </Button>
-                <Button x:Name="button_Copy1" Content="배경색" RenderTransformOrigin="0.368,-0.656" Grid.Row="2" Click="button_Copy1_Click" BorderBrush="{x:Null}" Foreground="{x:Null}">
+                <Button x:Name="button" Click="ColorSelectorButton" BorderBrush="{x:Null}" Foreground="{x:Null}" Style="{StaticResource MyButton}" Height="39" Margin="0, 0, 0, 5">
+                    <Button.Background>
+                        <ImageBrush ImageSource="paint.png"/>
+                    </Button.Background>
+                </Button>
+                <Button x:Name="button_Copy1" Click="button_Copy1_Click" BorderBrush="{x:Null}" Foreground="{x:Null}" Style="{StaticResource MyButton}" Height="39" Margin="0, 0, 0, 5">
                     <Button.Background>
                         <ImageBrush ImageSource="paint_bucket.png"/>
                     </Button.Background>
                 </Button>
-                <Button x:Name="button_Copy2" Content="사각형" RenderTransformOrigin="0.368,-0.656" Grid.Row="3" Click="RectButton" BorderBrush="{x:Null}" Foreground="{x:Null}">
+                <Button x:Name="button_Copy2" Click="RectButton" BorderBrush="{x:Null}" Foreground="{x:Null}" Style="{StaticResource MyButton}" Height="39" Margin="0, 0, 0, 5">
                     <Button.Background>
                         <ImageBrush ImageSource="rectangle.png"/>
                     </Button.Background>
                 </Button>
-                <Button x:Name="button_Copy3" Content="굵기" RenderTransformOrigin="0.368,-0.656" Grid.Row="1" Grid.Column="1" Margin="0,0,1,0" Click="PenWidthButton" BorderBrush="{x:Null}" Foreground="{x:Null}">
+                <Button x:Name="button_Copy3" Click="PenWidthButton" BorderBrush="{x:Null}" Foreground="{x:Null}" Style="{StaticResource MyButton}" Height="39" Margin="0, 0, 0, 5">
                     <Button.Background>
                         <ImageBrush ImageSource="width.png"/>
                     </Button.Background>
                 </Button>
-                <Button x:Name="button_Copy4" Content="지우개" RenderTransformOrigin="0.368,-0.656" Grid.Column="1" Margin="0,0,1,0" Click="EraserButtonClick" BorderBrush="{x:Null}" Foreground="{x:Null}">
+                <Button x:Name="button_Copy4" Click="EraserButtonClick" BorderBrush="{x:Null}" Foreground="{x:Null}" Style="{StaticResource MyButton}" Height="39" Margin="0, 0, 0, 5">
                     <Button.Background>
                         <ImageBrush ImageSource="erase.png"/>
                     </Button.Background>
                 </Button>
-                <Button x:Name="button_Copy5" Content="크기&#xD;&#xA;변경" RenderTransformOrigin="0.368,-0.656" Grid.Row="2" Grid.Column="1" Margin="0,0,1,0" Click="ResizeButton" BorderBrush="{x:Null}" Foreground="{x:Null}">
+                <Button x:Name="button_Copy5" Click="ResizeButton" BorderBrush="{x:Null}" Foreground="{x:Null}" Style="{StaticResource MyButton}" Height="39" Margin="0, 0, 0, 5">
                     <Button.Background>
                         <ImageBrush ImageSource="size.png"/>
                     </Button.Background>
                 </Button>
-                <Button x:Name="button_Copy6" Content="원" RenderTransformOrigin="0.368,-0.656" Grid.Row="3" Grid.Column="1" Margin="0,0,1,0" Click="button_Copy6_Click" BorderBrush="{x:Null}" Foreground="{x:Null}">
+                <Button x:Name="button_Copy6" Click="button_Copy6_Click" BorderBrush="{x:Null}" Foreground="{x:Null}" Style="{StaticResource MyButton}" Height="39" Margin="0, 0, 0, 5">
                     <Button.Background>
                         <ImageBrush ImageSource="circle.png"/>
                     </Button.Background>
                 </Button>
-                <Button x:Name="button_Copy7" Content="Button" RenderTransformOrigin="0.368,-0.656" Grid.Row="4" Click="LineButton" BorderBrush="{x:Null}" Foreground="{x:Null}" Margin="5">
+                <Button x:Name="button_Copy7" Click="LineButton" BorderBrush="{x:Null}" Foreground="{x:Null}" Style="{StaticResource MyButton}" Height="39">
                     <Button.Background>
                         <ImageBrush ImageSource="stripe.png"/>
                     </Button.Background>
                 </Button>
-                <Button x:Name="button_Copy8" Content="Button" RenderTransformOrigin="0.368,-0.656" Grid.Row="4" Grid.Column="1" Margin="0,0,1,0"/>
-            </Grid>
-
-
+            </StackPanel>
 
             <!-- DOWNPART-->
             <Rectangle Fill="#FFCECECE" Grid.ColumnSpan="3" Grid.Row="1" Height="20" VerticalAlignment="Top"/>
             <Label x:Name="CursorPosLable" Content="Label" HorizontalAlignment="Left" Width="160" Grid.Row="1" Background="{x:Null}" Padding="5,0,0,0" VerticalAlignment="Center" Margin="0,2" Height="16"/>
-            <Button x:Name="button4" Content="확" HorizontalAlignment="Right" Width="20" Click="button4_Click" BorderBrush="{x:Null}" Foreground="{x:Null}" Grid.Column="2" Grid.Row="1">
+            <Button x:Name="button4" Content="확" HorizontalAlignment="Right" Width="20" Click="button4_Click" BorderBrush="{x:Null}" Foreground="{x:Null}" Grid.Column="2" Grid.Row="1" Style="{StaticResource MyButton}">
                 <Button.Background>
                     <ImageBrush ImageSource="plus.png"/>
                 </Button.Background>
             </Button>
-            <Button x:Name="button5" Content="축" HorizontalAlignment="Right" Width="20" Margin="0,0,120,0" Click="button5_Click" BorderBrush="{x:Null}" Foreground="{x:Null}" Grid.Column="2" Grid.Row="1">
+            <Button x:Name="button5" Content="축" HorizontalAlignment="Right" Width="20" Margin="0,0,120,0" Click="button5_Click" BorderBrush="{x:Null}" Foreground="{x:Null}" Grid.Column="2" Grid.Row="1" Style="{StaticResource MyButton}">
                 <Button.Background>
                     <ImageBrush ImageSource="minus.png"/>
                 </Button.Background>
@@ -154,12 +164,12 @@
             <!-- TOOLS-->
             <Grid Name="ColorSelectorGrid" Margin="0,10,106,0" Visibility="Hidden" HorizontalAlignment="Right" Width="222" Height="290" VerticalAlignment="Top" Grid.ColumnSpan="3">
                 <xctk:ColorCanvas x:Name="ColorSelector"/>
-                <Button x:Name="button2" Content="Button" HorizontalAlignment="Left" Margin="137,270,0,0" Width="75" Click="ColorSelectOKButton"/>
+                <Button x:Name="button2" Content="Button" HorizontalAlignment="Left" Margin="137,270,0,0" Width="75" Click="ColorSelectOKButton" Style="{StaticResource MyButton}"/>
             </Grid>
 
             <Grid Name="ColorSelectorGrid_" Margin="0,10,106,0" Visibility="Hidden" HorizontalAlignment="Right" Width="222" Height="290" VerticalAlignment="Top" Grid.ColumnSpan="3">
                 <xctk:ColorCanvas x:Name="ColorSelector_"/>
-                <Button x:Name="button2_" Content="Button" HorizontalAlignment="Left" Margin="137,270,0,0" Width="75" Click="button2__Click"/>
+                <Button x:Name="button2_" Content="Button" HorizontalAlignment="Left" Margin="137,270,0,0" Width="75" Click="button2__Click" Style="{StaticResource MyButton}"/>
             </Grid>
 
 
@@ -167,6 +177,7 @@
                 <Slider x:Name="PenWidth" HorizontalAlignment="Center" Margin="0,10,0,0" Width="46" RenderTransformOrigin="0.5,0.5" TickPlacement="BottomRight" TickFrequency="1" IsSnapToTickEnabled="True" ValueChanged="PenWidth_ValueChanged" Minimum="1" Value="1" Orientation="Vertical" Height="138" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Top"/>
                 <TextBox x:Name="textBox" HorizontalAlignment="Left" Height="23" Margin="0,153,0,0" TextWrapping="Wrap" Text="{Binding Value, ElementName=PenWidth}" VerticalAlignment="Top" Width="46"/>
             </Grid>
+
         </Grid>
     </Grid>
 </Window>

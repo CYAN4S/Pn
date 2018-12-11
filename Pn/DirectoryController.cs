@@ -14,11 +14,12 @@ namespace Pn
 {
     class DirectoryController
     {
-        List<string> ListboxList;
+        public List<string> ListboxList { get; set; }
 
         public DirectoryController()
         {
             ListboxList = new List<string>();
+            ListboxList.Add("TESTING");
         }
 
         public void AddData(string data)
@@ -41,6 +42,7 @@ namespace Pn
                 var path = openFileDialog.FileName.Split('\\');
                 MessageBox.Show("불러왔습니다.", "알림");
 
+
                 // 리스트 박스 중복 검사
                 ListBoxItem remove = null;
                 foreach (ListBoxItem i in listBox.Items)
@@ -53,9 +55,37 @@ namespace Pn
                     listBox.Items.Remove(remove);
 
                 // 리스트 박스 아이템 생성
+                Grid gridItem = new Grid()
+                {
+                    Height = 45
+                };
+
+                Label titleLabel = new Label()
+                {
+                    Content = path[path.Length - 1],
+                    Padding = new Thickness(5, 0, 5, 0),
+                    FontSize = 16,
+                    FontWeight = FontWeights.Bold,
+                    Foreground = Brushes.White
+                };
+
+                Label pathLabel = new Label()
+                {
+                    Content = openFileDialog.FileName,
+                    Padding = new Thickness(5, 0, 5, 0),
+                    Margin = new Thickness(0, 23, 0, 0),
+                    BorderThickness = new Thickness(0, 0, 0, 5),
+                    BorderBrush = Brushes.White,
+                    Foreground = Brushes.White
+                };
+
+                gridItem.Children.Add(titleLabel);
+                gridItem.Children.Add(pathLabel);
+                
                 ListBoxItem item = new ListBoxItem
                 {
-                    Content = path[path.Length - 1] + "\n" + openFileDialog.FileName,
+                    //Content = path[path.Length - 1] + "\n" + openFileDialog.FileName,
+                    Content = gridItem,
                     Height = 45,
                     Tag = openFileDialog.FileName
                 };
@@ -107,11 +137,40 @@ namespace Pn
                 // File.WriteAllText(saveFileDialog1.FileName, XamlWriter.Save(MainCanvas.Children));
                 ExportToPng(saveFileDialog1.FileName, MainCanvas, CanvasGrid);
                 var path = saveFileDialog1.FileName.Split('\\');
+
+                Grid gridItem = new Grid()
+                {
+                    Height = 45
+                };
+
+                Label titleLabel = new Label()
+                {
+                    Content = path[path.Length - 1],
+                    Padding = new Thickness(5, 0, 5, 0),
+                    FontSize = 16,
+                    FontWeight = FontWeights.Bold,
+                    Foreground = Brushes.White
+                };
+
+                Label pathLabel = new Label()
+                {
+                    Content = saveFileDialog1.FileName,
+                    Padding = new Thickness(5, 0, 5, 0),
+                    Margin = new Thickness(0, 23, 0, 0),
+                    BorderThickness = new Thickness(0, 0, 0, 5),
+                    BorderBrush = Brushes.White,
+                    Foreground = Brushes.White
+                };
+
+                gridItem.Children.Add(titleLabel);
+                gridItem.Children.Add(pathLabel);
+
                 ListBoxItem item = new ListBoxItem
                 {
-                    Content = path[path.Length - 1] + "\n" + saveFileDialog1.FileName,
+                    //Content = path[path.Length - 1] + "\n" + saveFileDialog1.FileName,
+                    Content = gridItem,
                     Height = 45,
-                    Tag = saveFileDialog1.FileName
+                    Tag = saveFileDialog1.FileName,
                 };
                 listBox.Items.Insert(0, item);
             }
