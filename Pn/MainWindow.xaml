@@ -21,7 +21,7 @@
 
         <!--TOPMENU-->
         <Rectangle Fill="White" Grid.ColumnSpan="2"/>
-        <Label x:Name="label1" Content="문서" Height="40" VerticalAlignment="Top"/>
+        <Label x:Name="label1" Content="문서" Height="40" VerticalAlignment="Top" Foreground="{x:Null}" BorderBrush="Yellow" BorderThickness="3,3,3,0" Background="White"/>
         <Button x:Name="button3" Content="Button" Margin="175,16,0,5" Click="LoadFile" BorderBrush="{x:Null}" Foreground="{x:Null}">
             <Button.Background>
                 <ImageBrush ImageSource="load.png" Stretch="Uniform"/>
@@ -176,6 +176,6 @@
             <TextBox x:Name="RangeTextBox" Margin="0,0,145,0" TextWrapping="Wrap" Text="100%" HorizontalAlignment="Right" Width="60" TextAlignment="Center" Background="{x:Null}" BorderBrush="{x:Null}" TextChanged="RangeTextBox_TextChanged" Grid.ColumnSpan="2" Grid.Column="1" Grid.Row="1"/>
             <Label x:Name="HelpLabel" Content="설명" Grid.Row="1" Background="{x:Null}" Padding="5,0,0,0" Margin="112,2,69,2" HorizontalContentAlignment="Center"/>
         </Grid>
-        <TextBox x:Name="Text_Show" Grid.Column="1" HorizontalAlignment="Left" Height="30" Margin="0,10,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="269" FontSize="18"/>
+        <TextBox x:Name="Text_Show" Grid.Column="1" HorizontalAlignment="Left" Height="30" Margin="0,10,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="269" FontSize="18" BorderBrush="{x:Null}"/>
     </Grid>
 </Window>
