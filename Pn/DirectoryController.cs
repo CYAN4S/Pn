@@ -1,10 +1,6 @@
 ﻿using Microsoft.Win32;
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -18,8 +14,10 @@ namespace Pn
 
         public DirectoryController()
         {
-            ListboxList = new List<string>();
-            ListboxList.Add("TESTING");
+            ListboxList = new List<string>
+            {
+                "TESTING"
+            };
         }
 
         public void AddData(string data)
@@ -84,7 +82,6 @@ namespace Pn
                 
                 ListBoxItem item = new ListBoxItem
                 {
-                    //Content = path[path.Length - 1] + "\n" + openFileDialog.FileName,
                     Content = gridItem,
                     Height = 45,
                     Tag = openFileDialog.FileName
@@ -125,7 +122,6 @@ namespace Pn
             {
                 SaveFileDialog saveFileDialog1 = new SaveFileDialog
                 {
-                    //saveFileDialog1.Filter = "XAML files|*.xaml|Image files (*.png)|*.png|All files (*.*)|*.*";
                     Filter = "Image files (*.png)|*.png"
                 };
 
@@ -133,8 +129,7 @@ namespace Pn
 
                 if (!result)
                     return;
-
-                // File.WriteAllText(saveFileDialog1.FileName, XamlWriter.Save(MainCanvas.Children));
+                
                 ExportToPng(saveFileDialog1.FileName, MainCanvas, CanvasGrid);
                 var path = saveFileDialog1.FileName.Split('\\');
 
@@ -167,7 +162,6 @@ namespace Pn
 
                 ListBoxItem item = new ListBoxItem
                 {
-                    //Content = path[path.Length - 1] + "\n" + saveFileDialog1.FileName,
                     Content = gridItem,
                     Height = 45,
                     Tag = saveFileDialog1.FileName,
@@ -188,41 +182,24 @@ namespace Pn
         public void ExportToPng(string path, Canvas surface, Grid grid)
         {
             if (path == null) return;
-
-            // Save current canvas transform
+            
             Transform transform = surface.LayoutTransform;
-            // reset current transform (in case it is scaled or rotated)
             surface.LayoutTransform = null;
-
-            // Get the size of canvas
+            
             Size size = new Size((int)surface.Width, (int)surface.Height);
-            // Measure and arrange the surface
-            // VERY IMPORTANT
             surface.Measure(size);
             surface.Arrange(new Rect(size));
-
-            // Create a render bitmap and push the surface to it
-            RenderTargetBitmap renderBitmap =
-              new RenderTargetBitmap(
-                (int)size.Width,
-                (int)size.Height,
-                96d,
-                96d,
-                PixelFormats.Pbgra32);
+            
+            RenderTargetBitmap renderBitmap = new RenderTargetBitmap((int)size.Width, (int)size.Height, 96d, 96d, PixelFormats.Pbgra32);
             renderBitmap.Render(surface);
-
-            // Create a file stream for saving image
+            
             using (FileStream outStream = new FileStream(path, FileMode.Create))
             {
-                // Use png encoder for our data
                 PngBitmapEncoder encoder = new PngBitmapEncoder();
-                // push the rendered bitmap to it
                 encoder.Frames.Add(BitmapFrame.Create(renderBitmap));
-                // save the data to the stream
                 encoder.Save(outStream);
             }
-
-            // Restore previously saved layout
+            
             surface.LayoutTransform = transform;
         }
     }

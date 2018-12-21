@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Media;
+﻿using System.Windows.Media;
 
 namespace Pn
 {
@@ -21,6 +16,5 @@ namespace Pn
             fillColor = Brushes.Black;
             penWidth = 1;
         }
-
     }
 }

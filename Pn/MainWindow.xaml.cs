@@ -1,22 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using Microsoft.Win32;
 using System.IO;
-using System.Drawing;
-using System.ComponentModel;
-using System.Windows.Markup;
 
 
 namespace Pn
@@ -52,7 +41,6 @@ namespace Pn
         }
 
         #region Event
-
         // WINDOW
         private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
@@ -62,14 +50,12 @@ namespace Pn
 
         private void Window_MouseMove(object sender, MouseEventArgs e)
         {
-            //CursorPosLable.Content = "(" + (int)e.GetPosition(CanvasGrid).X + ", " + (int)e.GetPosition(CanvasGrid).Y + ")";
             paintCanvas.MouseMove(sender, e, toolController);
         }
 
         private void Window_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             paintCanvas.MouseLeftButtonUp(sender, e, toolController);
-            //HelpLabel.Content = "LAB_";
         }
 
         //MAINCANVAS
@@ -96,11 +82,9 @@ namespace Pn
             HelpLabel.Content = "Rect";
             PenWidthGrid.Visibility = Visibility.Hidden;
         }
-
         #endregion
 
         #region Drawing Tool Selection
-
         private void PenButtonClick(object sender, RoutedEventArgs e)
         {
             toolController.pick = 1;
@@ -125,11 +109,9 @@ namespace Pn
         {
             toolController.pick = 5;
         }
-
         #endregion
 
         #region Color Tool
-
         private void ColorSelectorButton(object sender, RoutedEventArgs e)
         {
             ColorSelectorGrid.Visibility = Visibility.Visible;
@@ -137,7 +119,6 @@ namespace Pn
 
         private void ColorSelectOKButton(object sender, RoutedEventArgs e)
         {
-            //toolController.color = ColorSelector
             var cl = ColorSelector.SelectedColor;
             Color color = new Color
             {
@@ -169,7 +150,6 @@ namespace Pn
             toolController.fillColor = new SolidColorBrush(color);
             ColorSelectorGrid_.Visibility = Visibility.Hidden;
         }
-
         #endregion
 
         private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -207,7 +187,6 @@ namespace Pn
         }
 
         #region Pen Width Tool
-
         private void PenWidth_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             if (toolController != null)
@@ -220,38 +199,9 @@ namespace Pn
         {
             PenWidthGrid.Visibility = PenWidthGrid.Visibility == Visibility.Visible ? Visibility.Hidden : Visibility.Visible;
         }
-        
         #endregion
-
-        private void NewFile(object sender, RoutedEventArgs e)
-        {
-            if (MainCanvas.Children.Count > 0)
-            {
-                MessageBoxResult result = MessageBox.Show("변경 내용을 저장하시겠습니까?", "저장", MessageBoxButton.YesNoCancel);
-
-                if (result == MessageBoxResult.Yes)
-                {
-                    directoryController.SaveFile(listBox, MainCanvas, CanvasGrid);
-                }
-                else if (result == MessageBoxResult.No)
-                {
-                    // skip.
-                }
-                else if (result == MessageBoxResult.Cancel)
-                {
-                    return;
-                }
-            }
-
-            MainCanvas.Children.Clear();
-            currentFilePath = null;
-            isNewFile = true;
-
-            FileNameLabel.Content = "새 문서";
-        }
-
+        
         #region Load & Save
-
         private void LoadFile(object sender, RoutedEventArgs e)
         {
             if (MainCanvas.Children.Count > 0)
@@ -280,45 +230,33 @@ namespace Pn
         {
             directoryController.SaveFile(listBox, MainCanvas, CanvasGrid);
             FileNameLabel.Content = System.IO.Path.GetFileName(currentFilePath);
-            //if (isNewFile)
-            //{
-            //    //Stream myStream;
-            //    SaveFileDialog saveFileDialog1 = new SaveFileDialog
-            //    {
-            //        //saveFileDialog1.Filter = "XAML files|*.xaml|Image files (*.png)|*.png|All files (*.*)|*.*";
-            //        Filter = "Image files (*.png)|*.png"
-            //    };
-            //    //saveFileDialog1.FilterIndex = 2;
-            //    //saveFileDialog1.RestoreDirectory = true;
-            //    var result = saveFileDialog1.ShowDialog();
-            //    if (result == true)
-            //    {
-            //        // File.WriteAllText(saveFileDialog1.FileName, XamlWriter.Save(MainCanvas.Children));
-            //        ExportToPng(saveFileDialog1.FileName, MainCanvas, CanvasGrid);
-            //    }
-            //    /*
-            //    if (saveFileDialog1.ShowDialog() == DialogResult.OK)
-            //    {
-            //        if ((myStream = saveFileDialog1.OpenFile()) != null)
-            //        {
-            //            // Code to write the stream goes here.
-            //            myStream.Close();
-            //        }
-            //    }*/
-            //    var path = saveFileDialog1.FileName.Split('\\');
-            //    ListBoxItem item = new ListBoxItem
-            //    {
-            //        Content = path[path.Length - 1] + "\n" + saveFileDialog1.FileName,
-            //        Height = 45,
-            //        Tag = saveFileDialog1.FileName
-            //    };
-            //    listBox.Items.Insert(0, item);
-            //}
-            //else
-            //{
-            //    ExportToPng(currentFilePath, MainCanvas, CanvasGrid);
-            //}
-            //MessageBox.Show("저장되었습니다.", "알림");
+        }
+
+        private void NewFile(object sender, RoutedEventArgs e)
+        {
+            if (MainCanvas.Children.Count > 0)
+            {
+                MessageBoxResult result = MessageBox.Show("변경 내용을 저장하시겠습니까?", "저장", MessageBoxButton.YesNoCancel);
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    directoryController.SaveFile(listBox, MainCanvas, CanvasGrid);
+                }
+                else if (result == MessageBoxResult.No)
+                {
+                    // skip.
+                }
+                else if (result == MessageBoxResult.Cancel)
+                {
+                    return;
+                }
+            }
+
+            MainCanvas.Children.Clear();
+            currentFilePath = null;
+            isNewFile = true;
+
+            FileNameLabel.Content = "새 문서";
         }
         #endregion
 
@@ -422,14 +360,6 @@ namespace Pn
 
         private void RangeTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            //string inputText = RangeTextBox.Text;
-            //char[] percent = { '%' };
-            //inputText = inputText.TrimEnd(percent);
-            //int percentage =
-
-
         }
-
-        
     }
 }

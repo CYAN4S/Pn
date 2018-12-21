@@ -1,16 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 
@@ -52,14 +44,6 @@ namespace Pn
                     myEllipse.Margin = new Thickness(_pos.X - tool.penWidth * 0.5, _pos.Y - tool.penWidth * 0.5, 0, 0);
 
                     MainCanvas.Children.Add(myEllipse);
-                    //polyline = new Polyline
-                    //{
-                    //    Stroke = tool.color,
-                    //    Fill = tool.color,
-                    //    StrokeThickness = tool.penWidth
-                    //};
-                    //polyline.Points.Add(_pos);
-                    //MainCanvas.Children.Add(polyline);
                     break;
 
                 case 2:
@@ -74,11 +58,9 @@ namespace Pn
                     MainCanvas.Children.Add(myEllipseEra);
                     break;
                     
-
                 default:
                     break;
             }
-
         }
 
         public void MouseMove(object sender, MouseEventArgs e, ToolController tool)
@@ -120,7 +102,6 @@ namespace Pn
                     {
                         Width = tool.penWidth,
                         Height = tool.penWidth,
-                        //Stroke = tool.strokeColor,
                         Fill = tool.strokeColor,
                     };
                     myEllipse_.Margin = new Thickness(_pos.X - tool.penWidth * 0.5, _pos.Y - tool.penWidth * 0.5, 0, 0);
@@ -129,7 +110,6 @@ namespace Pn
                     MainCanvas.Children.Add(myEllipse_);
                     _pos = pos;
                     linesCount += 2;
-                    //polyline.Points.Add(pos);
                     break;
 
                 case 2:
@@ -147,7 +127,6 @@ namespace Pn
                     {
                         Width = tool.penWidth,
                         Height = tool.penWidth,
-                        //Stroke = tool.strokeColor,
                         Fill = Brushes.White
                     };
                     _myEllipse.Margin = new Thickness(_pos.X - tool.penWidth * 0.5, _pos.Y - tool.penWidth * 0.5, 0, 0);

@@ -4,8 +4,7 @@
 		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 		xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-		xmlns:local="clr-namespace:Pn"
-		mc:Ignorable="d"
+        mc:Ignorable="d"
 		Title="PaintDoc" Height="600" Width="800" MouseMove="Window_MouseMove" MouseLeftButtonDown="Window_MouseLeftButtonDown" MouseLeftButtonUp="Window_MouseLeftButtonUp" Background="#FFD0ABF1">
     <Window.Resources>
         <Style x:Key="MyButton" TargetType="Button">
