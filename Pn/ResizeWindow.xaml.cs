@@ -31,18 +31,12 @@ namespace Pn
 
         private void OKButton(object sender, RoutedEventArgs e)
         {
-            if (OnChildTextInputEvent != null)
-            {
-                OnChildTextInputEvent(WidthTextBox.Text, HeightTextBox.Text);
-            }
+            OnChildTextInputEvent?.Invoke(WidthTextBox.Text, HeightTextBox.Text);
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if (OnChildTextInputEvent != null)
-            {
-                OnChildTextInputEvent(null, null);
-            }
+            OnChildTextInputEvent?.Invoke(null, null);
         }
     }
 }
